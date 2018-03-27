@@ -70,7 +70,7 @@ $(document).ready(function () {
     var appUrl = $('#GA-appUrl').val()
 
     //hydrate form fields with current values and display button content
-    $.getJSON(appUrl + 'settings.json', function(data) {
+    $.getJSON(appUrl + 'lib/settings.json', function(data) {
         $('#GA-setMsg').val(data.texte);
         var GASetDisplay = $('#GA-setDisplay');
         $(GASetDisplay).val(data.checked);

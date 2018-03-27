@@ -35,7 +35,7 @@ class AdminController extends Controller implements ISettings {
         parent::__construct($appName, $request);
         $this->config = $config;
         $this->appUrl = \OC::$WEBROOT.\OC::$APPSROOTS[0]['url'].'/'.$this->appName.'/';
-        $this->jsonPath =  \OC::$SERVERROOT.\OC::$APPSROOTS[0]['url'].'/'.$this->appName.'/'.'settings.json';
+        $this->jsonPath =  \OC::$SERVERROOT.\OC::$APPSROOTS[0]['url'].'/'.$this->appName.'/'.'lib/settings.json';
     }
 
     /**
@@ -66,8 +66,6 @@ class AdminController extends Controller implements ISettings {
 
         }
     }
-
-
 
     /**
      * @return TemplateResponse

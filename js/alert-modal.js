@@ -10,7 +10,7 @@ $(document).ready(function () {
     $('.GA-message').hide();
 
     //hydrate HTML
-    $.getJSON('/owncloud/apps/groupalert/settings.json', function(data) {
+    $.getJSON('/owncloud/apps/groupalert/lib/settings.json', function(data) {
 
         if (data.checked == 'true') {
             $('.GA-message-content').html(data.texte);

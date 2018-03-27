@@ -1,6 +1,6 @@
 <?php
 require_once '../../../lib/base.php';
-$json = OC::$APPSROOTS[0]['path'].'/groupalert/settings.json';
+$json = OC::$APPSROOTS[0]['path'].'/groupalert/lib/settings.json';
 
 $fields = ['texte', 'checked', 'groups'];
 
