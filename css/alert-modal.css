@@ -1,0 +1,42 @@
+.GA-message {
+    position: absolute;
+    z-index: 10;
+    top: 200px;
+    left: 50%;
+    margin-left: -200px;
+    width: 400px;
+    padding: 100px 30px;
+    background-color: #eee;
+    color: #333;
+    border-radius: 3px;
+    text-align: center;
+}
+.GA-close {
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    background-color: #3a6acb;
+    color: #fff;
+    line-height: 30px;
+}
+.GA-close:hover {
+    cursor: pointer;
+}
+@media all and (max-width: 650px) {
+    .GA-message {
+        top: 100px;
+        width: 250px;
+        margin-left: -150px;
+
+    }
+}
+@media all and (max-width: 400px) {
+    .GA-message {
+        width: 170px;
+        margin-left: -105px;
+
+    }
+}
