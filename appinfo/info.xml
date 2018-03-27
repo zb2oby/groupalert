@@ -9,11 +9,18 @@
     <version>0.9</version>
     <namespace>GroupAlert</namespace>
     <category>collaboration</category>
-    <repository type="bitbucket">https://zb2oby@bitbucket.org/zb2oby/groupalert.git</repository>
+    <repository type="bitbucket">https://bitbucket.org/zb2oby/groupalert.git</repository>
     <summary>display a message for specific groups.</summary>
     <dependencies>
         <owncloud min-version="10.0.7" max-version="10.0.99" />
     </dependencies>
+    <documentation>
+        <user>https://bitbucket.org/zb2oby/groupalert/src/master/README.md</user>
+        <admin>https://bitbucket.org/zb2oby/groupalert/src/master/README.md</admin>
+        <developer>https://bitbucket.org/zb2oby/groupalert/src/master/README.md</developer>
+    </documentation>
+    <bugs>https://bitbucket.org/zb2oby/groupalert/issues</bugs>
+    <website>https://bitbucket.org/zb2oby/groupalert/src/master</website>
     <screenshot>https://bitbucket.org/zb2oby/groupalert/raw/master/img/screenshot.png</screenshot>
     <default_enable/>
     <settings>
