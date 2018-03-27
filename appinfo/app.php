@@ -17,7 +17,7 @@ $eventDispatcher->addListener(
         if ($userSession->isLoggedIn()) {
 
             //Check settings and userGroup
-            $json = \OC::$APPSROOTS[0]['path'].'/groupalert/settings.json';
+            $json = \OC::$APPSROOTS[0]['path'].'/groupalert/lib/settings.json';
             if (file_exists($json)) {
                 $jsonContent = file_get_contents($json);
                 $json_data = json_decode($jsonContent, true);
