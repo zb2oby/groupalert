@@ -1,0 +1,34 @@
+#GA-setMsg {
+    /*margin-top: 30px;*/
+}
+
+#GA-setMsg-form textarea {
+    width: auto;
+}
+#GA-labelActiveDisplay {
+    font-size: 13px;
+    padding: 5px;
+    background-color: rgba(240,240,240,.9);
+    font-weight: 600;
+    color: #555;
+    border: 1px solid rgba(240,240,240,.9);
+    cursor: pointer;
+    margin-left: .5em;
+}
+
+#GA-labelActiveDisplay:hover {
+    background-color: rgba(255, 255, 255, .95);
+    color: #111;
+}
+
+#GA-setDisplay {
+    visibility: hidden;
+}
+
+#GA-groups-form .select2-container {
+    width: 220px;
+}
+
+#translations {
+    visibility: hidden;
+}
