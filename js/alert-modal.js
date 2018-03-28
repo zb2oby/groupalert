@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     //add HTML to files view
     $('#app-content-files').append('<div class="GA-message" style="display: block;">\n' +
         '\t<div class="GA-close">X</div>\n' +
@@ -10,9 +9,13 @@ $(document).ready(function () {
     $('.GA-message').hide();
 
     //hydrate HTML
-    $.getJSON('/owncloud/apps/groupalert/lib/settings.json', function(data) {
+    var baseUrl = OC.generateUrl('');
+    var instanceRoot = baseUrl.split('/');
+    var instanceName = instanceRoot[1];
 
-        if (data.checked == 'true') {
+    $.getJSON('/'+instanceName+'/apps/groupalert/lib/settings.json', function(data) {
+
+        if (data.checked === 'true') {
             $('.GA-message-content').html(data.texte);
             $('.GA-message').show();
         }
