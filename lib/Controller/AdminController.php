@@ -68,20 +68,36 @@ class AdminController extends Controller implements ISettings {
     }
 
     /**
+     * @return array
+     */
+    public function getListFolder($dir) {
+        $listFile = \OCA\Files\Helper::getFiles($dir);
+        $listFolder = [];
+        foreach ($listFile as $file) {
+
+            if ($file['type'] === 'dir') {
+                $listFolder[] = $file['name'];
+            }
+        }
+        return $listFolder;
+    }
+
+    /**
      * @return TemplateResponse
      */
     public function getPanel() {
         $json_data = $this->getJson();
+        $listFolder = $this->getListFolder('/');
 
         $groups = $json_data['groups'];
         $params = [
             'groups' => str_replace(',', '|', $groups),
             'appUrl' => $this->appUrl,
+            'listFolder' => $listFolder,
         ];
         return new TemplateResponse($this->appName, 'settings-admin', $params, '');
 
     }
-
 
 }
 

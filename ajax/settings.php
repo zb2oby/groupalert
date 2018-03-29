@@ -2,7 +2,7 @@
 require_once '../../../lib/base.php';
 $json = OC::$APPSROOTS[0]['path'].'/groupalert/lib/settings.json';
 
-$fields = ['texte', 'checked', 'groups'];
+$fields = ['texte', 'checked', 'groups', 'folder'];
 
 if (file_exists($json)) {
 

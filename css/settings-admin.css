@@ -29,6 +29,14 @@
     width: 220px;
 }
 
+#GA-folder-form {
+    margin-top: 10px;
+}
+
+#GA-folder-form select#GA-folder {
+    min-width: 150px;
+}
+
 #translations {
     visibility: hidden;
 }

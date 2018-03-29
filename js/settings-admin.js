@@ -1,4 +1,4 @@
-function updatePrompt(appUrl) {
+function updatePrompt(appUrl, notificationSave) {
 
     var text = $("#GA-setMsg-form").find('#GA-setMsg').val()
 
@@ -29,6 +29,10 @@ function updatePrompt(appUrl) {
 
     });
 
+    $("#GA-setMsg").on("blur", function() {
+        OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
+    });
+
     //Update value of checkbox and update button content
     $("#GA-setDisplay").on("change", function(){
         var checkedVal;
@@ -50,7 +54,30 @@ function updatePrompt(appUrl) {
             data: 'checked='+checkedVal,
         })
             .done(function(response) {
+                OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
                 //console.log(response);
+            })
+            .fail(function() {
+                //console.log("error");
+            })
+            .always(function() {
+                //console.log("complete");
+            });
+    });
+
+
+    //update value of select folders
+    $('#GA-folder-form').on('change', function(){
+       var selectedVal = '/'+$('#GA-folder option:selected').val();
+        $.ajax({
+            url: appUrl + 'ajax/settings.php',
+            type: 'GET',
+            dataType: 'html',
+            data: 'folder='+selectedVal,
+        })
+            .done(function() {
+                OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
+                //console.log("success");
             })
             .fail(function() {
                 //console.log("error");
@@ -67,11 +94,13 @@ function updatePrompt(appUrl) {
 
 $(document).ready(function () {
 
-    var appUrl = $('#GA-appUrl').val()
+    var appUrl = $('#GA-appUrl').val();
+    var notificationSave = $('#GA-l10n-notification-save').text();
 
     //hydrate form fields with current values and display button content
     $.getJSON(appUrl + 'lib/settings.json', function(data) {
         $('#GA-setMsg').val(data.texte);
+        $('#GA-folder').val(data.folder.split('/')[1]);
         var GASetDisplay = $('#GA-setDisplay');
         $(GASetDisplay).val(data.checked);
         var GATranslate;
@@ -101,6 +130,7 @@ $(document).ready(function () {
             data: 'groups='+groups
         })
             .done(function(response) {
+                OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
                 //console.log(appUrl);
             })
             .fail(function() {
@@ -111,6 +141,8 @@ $(document).ready(function () {
             });
     });
 
-    updatePrompt(appUrl);
+
+
+    updatePrompt(appUrl, notificationSave);
 
 });
