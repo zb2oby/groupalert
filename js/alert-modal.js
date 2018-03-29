@@ -15,10 +15,7 @@ function getTargetDir() {
 
 function showMessage() {
     var targetDir = getTargetDir();
-    var baseUrl = OC.generateUrl('');
-    var instanceRoot = baseUrl.split('/');
-    var instanceName = instanceRoot[1];
-    $.getJSON('/'+instanceName+'/apps/groupalert/lib/settings.json', function(data) {
+    $.getJSON('/apps/groupalert/lib/settings.json', function(data) {
         if (data.checked === 'true' && targetDir === data.folder) {
             $('.GA-message-content').html(data.texte);
             $('.GA-message').show();

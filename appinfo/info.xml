@@ -2,8 +2,7 @@
 <info>
     <id>groupalert</id>
     <name>Group Alert</name>
-    <description>Group Alert enables ownCloud's admin users to display a message on files's view for defined groups. It allows to choose in which folder's view the message will be displayed.
-    </description>
+    <description>Group Alert enables ownCloud's admin users to display a message on files's view for defined groups. It allows to choose in which folder's view the message will be displayed.</description>
     <licence>AGPL</licence>
     <author>François Boubée</author>
     <version>0.9.3</version>

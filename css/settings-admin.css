@@ -2,10 +2,7 @@
     /*margin-top: 30px;*/
 }
 
-#GA-setMsg-form textarea {
-    width: auto;
-}
-#GA-labelActiveDisplay {
+.label-button {
     font-size: 13px;
     padding: 5px;
     background-color: rgba(240,240,240,.9);
@@ -13,16 +10,23 @@
     color: #555;
     border: 1px solid rgba(240,240,240,.9);
     cursor: pointer;
-    margin-left: .5em;
 }
 
-#GA-labelActiveDisplay:hover {
+.label-button:hover {
     background-color: rgba(255, 255, 255, .95);
     color: #111;
 }
 
+#GA-setMsg-form textarea {
+    width: auto;
+}
+#GA-labelActiveDisplay {
+    margin-left: .5em;
+}
+
 #GA-setDisplay {
     visibility: hidden;
+    margin: 0;
 }
 
 #GA-groups-form .select2-container {
@@ -35,6 +39,14 @@
 
 #GA-folder-form select#GA-folder {
     min-width: 150px;
+}
+
+#GA-preview {
+    margin-left: -15px;
+}
+
+#GA-message-preview {
+    top: 0;
 }
 
 #translations {
