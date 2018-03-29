@@ -49,6 +49,17 @@
     top: 0;
 }
 
+#bug-link {
+    font-size: 10px;
+}
+
+#bug-link a{
+    color: #0b93d5;
+}
+#bug-link a:hover {
+    color: #7a43b6;
+}
+
 #translations {
     visibility: hidden;
 }
