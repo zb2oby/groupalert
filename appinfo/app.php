@@ -2,7 +2,7 @@
 namespace OCA\GroupAlert;
 
 use OCP\Util;
-
+use OCP\Files\Folder;
 Util::addStyle('groupalert', 'alert-modal');
 
 
@@ -33,6 +33,7 @@ $eventDispatcher->addListener(
                 foreach ($userGroups as $userGroup) {
                     if ($GAgroup === $userGroup) {
                         $display = true;
+                        break;
                     }
                 }
             }

@@ -14,7 +14,18 @@ style('groupalert', 'settings-admin');
         <label for="GA-setGroups"><?php p($l->t('Display for the following groups')); ?> : </label>
         <input type="hidden" id="GA-setGroups" name="GA-setGroups" value="<?php p($_['groups']); ?>">
     </div>
+    <div id="GA-folder-form">
+        <label for="GA-folder"><?php p($l->t("Display into the following folder's view")); ?> : </label>
+        <select name="GA-folder" id="GA-folder">
+            <option value=""><?php p($l->t("Main file's view")); ?></option>
+           <?php foreach ($_['listFolder'] as $folder) { ?>
+               <option value="<?php p($folder); ?>"><?php p($folder); ?></option>
+           <?php } ?>
+        </select>
+
+    </div>
     <ul id="translations">
+        <li id="GA-l10n-notification-save"><?php p($l->t('Group-Alert modifications saved')); ?></li>
         <li id="GA-l10n-disable"><?php p($l->t('Disable group message')); ?></li>
         <li id="GA-l10n-enable"><?php p($l->t('Enable group message')); ?></li>
     </ul>
