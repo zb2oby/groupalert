@@ -2,7 +2,7 @@
 <info>
     <id>groupalert</id>
     <name>Group Alert</name>
-    <description>Group Alert enables ownCloud's admin users to display a message on files's view just after login for defined groups.
+    <description>Group Alert enables ownCloud's admin users to display a message on files's view for defined groups. It allows to choose in which folder's view the message will be displayed.
     </description>
     <licence>AGPL</licence>
     <author>François Boubée</author>
@@ -10,7 +10,7 @@
     <namespace>GroupAlert</namespace>
     <category>collaboration</category>
     <repository type="bitbucket">https://bitbucket.org/zb2oby/groupalert.git</repository>
-    <summary>display a message for specific groups.</summary>
+    <summary>display a message for specific groups in specific folder.</summary>
     <dependencies>
         <owncloud min-version="10.0.7" max-version="10.0.99" />
     </dependencies>
