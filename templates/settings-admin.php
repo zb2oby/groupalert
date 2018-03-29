@@ -23,8 +23,8 @@ style('groupalert', 'settings-admin');
                <option value="<?php p($folder); ?>"><?php p($folder); ?></option>
            <?php } ?>
         </select>
-
     </div>
+    <p id="bug-link"><?php p($l->t('Something went wrong ?')); ?> <a href="https://bitbucket.org/zb2oby/groupalert/issues" target="_blank"><?php p($l->t('Report a bug')); ?></a> </p>
     <ul id="translations">
         <li id="GA-l10n-notification-save"><?php p($l->t('Group-Alert modifications saved')); ?></li>
         <li id="GA-l10n-disable"><?php p($l->t('Disable group message')); ?></li>

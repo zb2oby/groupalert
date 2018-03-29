@@ -1,4 +1,4 @@
-function updatePrompt(appUrl, notificationSave) {
+function updatePrompt(notificationSave) {
 
     var text = $("#GA-setMsg-form").find('#GA-setMsg').val()
 
@@ -12,7 +12,7 @@ function updatePrompt(appUrl, notificationSave) {
         text = currentVal;
 
         $.ajax({
-            url: appUrl + 'ajax/settings.php',
+            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
             type: 'GET',
             dataType: 'html',
             data: 'texte='+text,
@@ -48,7 +48,7 @@ function updatePrompt(appUrl, notificationSave) {
         }
 
         $.ajax({
-            url: appUrl + 'ajax/settings.php',
+            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
             type: 'GET',
             dataType: 'html',
             data: 'checked='+checkedVal,
@@ -58,7 +58,7 @@ function updatePrompt(appUrl, notificationSave) {
                 //console.log(response);
             })
             .fail(function() {
-                //console.log("error");
+                console.log("error");
             })
             .always(function() {
                 //console.log("complete");
@@ -67,10 +67,10 @@ function updatePrompt(appUrl, notificationSave) {
 
 
     //update value of select folders
-    $('#GA-folder-form').on('change', function(){
-       var selectedVal = '/'+$('#GA-folder option:selected').val();
+    $('#GA-folder-form select').on('change', function(){
+       var selectedVal = '/'+$(this).val();
         $.ajax({
-            url: appUrl + 'ajax/settings.php',
+            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
             type: 'GET',
             dataType: 'html',
             data: 'folder='+selectedVal,
@@ -80,7 +80,7 @@ function updatePrompt(appUrl, notificationSave) {
                 //console.log("success");
             })
             .fail(function() {
-                //console.log("error");
+                console.log("error");
             })
             .always(function() {
                 //console.log("complete");
@@ -94,11 +94,10 @@ function updatePrompt(appUrl, notificationSave) {
 
 $(document).ready(function () {
 
-    var appUrl = $('#GA-appUrl').val();
     var notificationSave = $('#GA-l10n-notification-save').text();
 
     //hydrate form fields with current values and display button content
-    $.getJSON(appUrl + 'lib/settings.json', function(data) {
+    $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
         $('#GA-setMsg').val(data.texte);
         $('#GA-folder').val(data.folder.split('/')[1]);
         var GASetDisplay = $('#GA-setDisplay');
@@ -124,14 +123,13 @@ $(document).ready(function () {
        var groups = ev.val || [];
 
         $.ajax({
-            url: appUrl + 'ajax/settings.php',
+            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
             type: 'GET',
             dataType: 'html',
             data: 'groups='+groups
         })
             .done(function(response) {
                 OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
-                //console.log(appUrl);
             })
             .fail(function() {
                 //console.log("error");
@@ -143,7 +141,7 @@ $(document).ready(function () {
 
 
     $('#GA-preview').click(function(){
-        $.getJSON('/apps/groupalert/lib/settings.json', function(data) {
+        $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
             $('#GA-setMsg-form').append('<div class="GA-message" id="GA-message-preview" style="display: block;">\n' +
                 '\t<div class="GA-close" id="GA-close-preview">X</div>\n' +
                 '\t<div class="GA-message-content">'+data.texte+'</div>\n' +
@@ -156,6 +154,6 @@ $(document).ready(function () {
         $('.GA-message').remove();
     });
 
-    updatePrompt(appUrl, notificationSave);
+    updatePrompt(notificationSave);
 
 });

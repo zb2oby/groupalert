@@ -15,7 +15,7 @@ function getTargetDir() {
 
 function showMessage() {
     var targetDir = getTargetDir();
-    $.getJSON('/apps/groupalert/lib/settings.json', function(data) {
+    $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
         if (data.checked === 'true' && targetDir === data.folder) {
             $('.GA-message-content').html(data.texte);
             $('.GA-message').show();
