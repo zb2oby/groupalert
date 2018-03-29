@@ -142,6 +142,22 @@ $(document).ready(function () {
     });
 
 
+    $('#GA-preview').click(function(){
+        var baseUrl = OC.generateUrl('');
+        var instanceRoot = baseUrl.split('/');
+        var instanceName = instanceRoot[1];
+        $.getJSON('/'+instanceName+'/apps/groupalert/lib/settings.json', function(data) {
+            $('#GA-setMsg-form').append('<div class="GA-message" id="GA-message-preview" style="display: block;">\n' +
+                '\t<div class="GA-close" id="GA-close-preview">X</div>\n' +
+                '\t<div class="GA-message-content">'+data.texte+'</div>\n' +
+                '</div>');
+        });
+
+
+    });
+    $(document).on('click', '#GA-close-preview', function() {
+        $('.GA-message').remove();
+    });
 
     updatePrompt(appUrl, notificationSave);
 

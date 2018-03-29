@@ -9,6 +9,7 @@ OC.L10N.register(
         "Type your message here" : "Votre message",
         "Group-Alert modifications saved": "Modifications enregistrées",
         "Display into the following folder's view": "Afficher dans la vue du dossier suivant",
-        "Main file's view" : "Vue principale des fichiers"
+        "Main file's view" : "Vue principale des fichiers",
+        "Preview" : "Prévisualiser"
 },
 "nplurals=2; plural=(n > 1);");

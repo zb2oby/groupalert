@@ -5,8 +5,9 @@ style('groupalert', 'settings-admin');
 <form class="section" id="GA-setMsg-form">
     <h2>
         <label for="GA-setMsg"><?php p($l->t('Group message')); ?></label>
-        <label id="GA-labelActiveDisplay" for="GA-setDisplay"></label>
+        <label class="label-button" id="GA-labelActiveDisplay" for="GA-setDisplay"></label>
         <input type="checkbox" name="GA-setDisplay" id="GA-setDisplay">
+        <label class="label-button" id="GA-preview"><?php p($l->t('Preview')); ?></label>
     </h2>
     <p><?php p($l->t('Message content')); ?> : </p>
     <textarea name="GA-setMsg" id="GA-setMsg" cols="50" rows="4" placeholder="<?php p($l->t('Type your message here')); ?>"></textarea>
