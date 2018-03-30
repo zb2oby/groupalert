@@ -16,6 +16,7 @@ function updatePrompt(notificationSave) {
             type: 'GET',
             dataType: 'html',
             data: 'texte='+text,
+            cache: false,
         })
             .done(function() {
                 //console.log("success");
@@ -52,6 +53,7 @@ function updatePrompt(notificationSave) {
             type: 'GET',
             dataType: 'html',
             data: 'checked='+checkedVal,
+            cache: false,
         })
             .done(function(response) {
                 OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
@@ -74,6 +76,7 @@ function updatePrompt(notificationSave) {
             type: 'GET',
             dataType: 'html',
             data: 'folder='+selectedVal,
+            cache: false,
         })
             .done(function() {
                 OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
@@ -97,21 +100,34 @@ $(document).ready(function () {
     var notificationSave = $('#GA-l10n-notification-save').text();
 
     //hydrate form fields with current values and display button content
-    $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
-        $('#GA-setMsg').val(data.texte);
-        $('#GA-folder').val(data.folder.split('/')[1]);
-        var GASetDisplay = $('#GA-setDisplay');
-        $(GASetDisplay).val(data.checked);
-        var GATranslate;
-        if (data.checked === 'true') {
-            GATranslate = $('#GA-l10n-disable').text();
-            $('#GA-labelActiveDisplay').html(GATranslate);
-            $(GASetDisplay).prop('checked', true);
-        }else {
-            GATranslate = $('#GA-l10n-enable').text();
-            $('#GA-labelActiveDisplay').html(GATranslate);
-        }
-    });
+    $.ajax({
+        url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+    })
+        .done(function(data) {
+            $('#GA-setMsg').val(data.texte);
+            $('#GA-folder').val(data.folder.split('/')[1]);
+            var GASetDisplay = $('#GA-setDisplay');
+            $(GASetDisplay).val(data.checked);
+            var GATranslate;
+            if (data.checked === 'true') {
+                GATranslate = $('#GA-l10n-disable').text();
+                $('#GA-labelActiveDisplay').html(GATranslate);
+                $(GASetDisplay).prop('checked', true);
+            }else {
+                GATranslate = $('#GA-l10n-enable').text();
+                $('#GA-labelActiveDisplay').html(GATranslate);
+            }
+
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            //console.log("complete");
+        });
 
 
     //initialize select group field
@@ -126,7 +142,8 @@ $(document).ready(function () {
             url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
             type: 'GET',
             dataType: 'html',
-            data: 'groups='+groups
+            data: 'groups='+groups,
+            cache: false,
         })
             .done(function(response) {
                 OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
@@ -141,13 +158,25 @@ $(document).ready(function () {
 
 
     $('#GA-preview').click(function(){
-        $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
-            $('#GA-setMsg-form').append('<div class="GA-message" id="GA-message-preview" style="display: block;">\n' +
-                '\t<div class="GA-close" id="GA-close-preview">X</div>\n' +
-                '\t<div class="GA-message-content">'+data.texte+'</div>\n' +
-                '</div>');
-        });
+        $.ajax({
+            url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
+            type: 'GET',
+            dataType: 'json',
+            cache: false,
+        })
+            .done(function(data) {
+                $('#GA-setMsg-form').append('<div class="GA-message" id="GA-message-preview" style="display: block;">\n' +
+                    '\t<div class="GA-close" id="GA-close-preview">X</div>\n' +
+                    '\t<div class="GA-message-content">'+data.texte+'</div>\n' +
+                    '</div>');
 
+            })
+            .fail(function() {
+                //console.log("error");
+            })
+            .always(function() {
+                //console.log("complete");
+            });
 
     });
     $(document).on('click', '#GA-close-preview', function() {

@@ -15,12 +15,25 @@ function getTargetDir() {
 
 function showMessage() {
     var targetDir = getTargetDir();
-    $.getJSON(OC.filePath('groupalert','lib','settings.json'), function(data) {
-        if (data.checked === 'true' && targetDir === data.folder) {
-            $('.GA-message-content').html(data.texte);
-            $('.GA-message').show();
-        }
-    });
+    $.ajax({
+        url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
+        type: 'GET',
+        dataType: 'json',
+        cache: false,
+    })
+        .done(function(data) {
+            if (data.checked === 'true' && targetDir === data.folder) {
+                $('.GA-message-content').html(data.texte);
+                $('.GA-message').show();
+            }
+
+        })
+        .fail(function() {
+            //console.log("error");
+        })
+        .always(function() {
+            //console.log("complete");
+        });
 }
 
 $(document).ready(function () {
