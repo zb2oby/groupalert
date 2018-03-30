@@ -8,6 +8,8 @@
     "Group-Alert modifications saved": "Group-Alert modifications saved",
     "Display into the following folder's view": "Display into the following folder's view",
     "Main file's view" : "Main file's view",
-    "Preview" : "Preview"
+    "Preview" : "Preview",
+    "Something went wrong ?" : "Something went wrong ?",
+    "Report a bug" : "Report a bug"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

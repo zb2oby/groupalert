@@ -10,6 +10,8 @@ OC.L10N.register(
         "Group-Alert modifications saved": "Modifications enregistrées",
         "Display into the following folder's view": "Afficher dans la vue du dossier suivant",
         "Main file's view" : "Vue principale des fichiers",
-        "Preview" : "Prévisualiser"
+        "Preview" : "Prévisualiser",
+        "Something went wrong ?" : "Quelque-chose s'est mal passé ?",
+        "Report a bug" : "Rapporter une erreur"
 },
 "nplurals=2; plural=(n > 1);");
