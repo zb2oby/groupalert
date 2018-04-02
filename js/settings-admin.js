@@ -166,9 +166,20 @@ $(document).ready(function () {
         })
             .done(function(data) {
                 $('#GA-setMsg-form').append('<div class="GA-message" id="GA-message-preview" style="display: block;">\n' +
-                    '\t<div class="GA-close" id="GA-close-preview">X</div>\n' +
+                    '\t<div class="GA-close" id="GA-close-preview"><img class="svg" src="../../core/img/actions/close.svg" alt="x"></div>\n' +
                     '\t<div class="GA-message-content">'+data.texte+'</div>\n' +
                     '</div>');
+                $('.GA-message').hide();
+                $('.GA-message').fadeIn("slow", function(){
+
+                });
+                $('#cboxOverlay').show();
+                $('#cboxOverlay').css({
+                    'opacity': '0.4',
+                    'cursor': 'pointer',
+                    'visibility': 'visible',
+                    'display' : 'block'
+                });
 
             })
             .fail(function() {
@@ -181,6 +192,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '#GA-close-preview', function() {
         $('.GA-message').remove();
+        $('#cboxOverlay').hide();
     });
 
     updatePrompt(notificationSave);

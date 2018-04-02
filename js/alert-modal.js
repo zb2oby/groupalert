@@ -14,7 +14,8 @@ function getTargetDir() {
 }
 
 function showMessage() {
-    var targetDir = getTargetDir();
+    var targetDir = decodeURIComponent(getTargetDir());
+
     $.ajax({
         url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
         type: 'GET',
@@ -24,7 +25,16 @@ function showMessage() {
         .done(function(data) {
             if (data.checked === 'true' && targetDir === data.folder) {
                 $('.GA-message-content').html(data.texte);
-                $('.GA-message').show();
+                $('.GA-message').fadeIn("slow", function(){
+
+                });
+                $('#cboxOverlay').show();
+                $('#cboxOverlay').css({
+                    'opacity': '0.4',
+                    'cursor': 'pointer',
+                    'visibility': 'visible',
+                    'display' : 'block'
+                });
             }
 
         })
@@ -40,7 +50,7 @@ $(document).ready(function () {
 
     //add HTML to files view
     $('#app-content-files').append('<div class="GA-message" style="display: block;">\n' +
-        '\t<div class="GA-close">X</div>\n' +
+        '\t<div class="GA-close"><img class="svg" src="../../../core/img/actions/close.svg" alt="x"></div>\n' +
         '\t<div class="GA-message-content"></div>\n' +
         '</div>');
 
@@ -54,6 +64,7 @@ $(document).ready(function () {
 
     $('.GA-close').click(function() {
         $('.GA-message').hide();
+        $('#cboxOverlay').hide();
     });
 
 });
