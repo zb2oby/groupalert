@@ -1,8 +1,5 @@
-#GA-setMsg {
-    /*margin-top: 30px;*/
-}
-
 .label-button {
+    display: block;
     font-size: 13px;
     padding: 5px;
     background-color: rgba(240,240,240,.9);
@@ -10,6 +7,8 @@
     color: #555;
     border: 1px solid rgba(240,240,240,.9);
     cursor: pointer;
+    text-align: center;
+    margin: 15px 0 0 0;
 }
 
 .label-button:hover {
@@ -17,12 +16,47 @@
     color: #111;
 }
 
+.GA-submit {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 15px;
+    padding: 0 10px;
+}
+
+#GA-new {
+    display: inline-block;
+}
+
+#GA-setTitle {
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.GA-content-block {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px;
+    border: 1px solid #eee;
+    min-height: 280px;
+}
+
+.block-title {
+    font-weight: bold;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+}
+
+
+.GA-buttons {
+    min-width: 150px;
+}
 #GA-setMsg-form textarea {
-    width: auto;
+    width: 96%;
 }
-#GA-labelActiveDisplay {
-    margin-left: .5em;
-}
+
 
 #GA-setDisplay {
     visibility: hidden;
@@ -30,7 +64,7 @@
 }
 
 #GA-groups-form .select2-container {
-    width: 220px;
+    min-width: 220px;
 }
 
 #GA-folder-form {
@@ -41,8 +75,9 @@
     min-width: 150px;
 }
 
-#GA-preview {
-    margin-left: -15px;
+.GA-folders-shared {
+    font-size: 11px;
+    color: #eee;
 }
 
 #GA-message-preview {
@@ -60,6 +95,31 @@
     color: #7a43b6;
 }
 
+.GA-prompt {
+    display: none;
+}
+
 #translations {
+    position: absolute;
     visibility: hidden;
+}
+
+#GA-error-content {
+    margin: 5px 0;
+    width: 450px;
+    padding: 5px;
+    border-radius: 3px;
+    color: #ce3702;
+}
+
+.required-error {
+    margin: 5px 0;
+    width: 250px;
+    padding: 5px;
+    border-radius: 3px;
+    color: #ce3702;
+}
+
+.error {
+    border: 1px solid #ce3702 !important;
 }

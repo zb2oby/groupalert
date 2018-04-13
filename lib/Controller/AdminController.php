@@ -1,12 +1,12 @@
 <?php
 namespace OCA\GroupAlert\Controller;
 
+use OC\Files\FileInfo;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IConfig;
 use OCP\IRequest;
 use OCP\Settings\ISettings;
-
 
 class AdminController extends Controller implements ISettings {
 
@@ -70,16 +70,48 @@ class AdminController extends Controller implements ISettings {
     /**
      * @return array
      */
-    public function getListFolder($dir) {
-        $listFile = \OCA\Files\Helper::getFiles($dir);
-        $listFolder = [];
-        foreach ($listFile as $file) {
+    public function getSharedWithGroupFolders($dir) {
+        $files = \OCA\Files\Helper::getFiles($dir);
+        $sharedFolders = [];
 
-            if ($file['type'] === 'dir') {
-                $listFolder[] = $file['name'];
+        foreach ($files as $file) {
+
+            //if it is shared from another user
+            if ($file->isShared()) {
+                $fileShared = \OC\Share\Share::getItemSharedWithBySource('folder', $file['fileid']);
             }
+            //if it is shared from admin to others
+            else {
+                $fileShared = \OC\Share\Share::getItemShared('folder', $file['fileid']);
+            }
+
+            //only if it is a folder
+            if ($file['type'] === 'dir') {
+
+                if (!empty($fileShared)){
+
+                    foreach ($fileShared as $folder) {
+
+                        //two way here because of different array's format of $fileShared due to different method to get it
+                        if ($file->isShared()){
+                            //only if it is a group sharing
+                            if ($fileShared['share_type'] == 1) {
+                                $sharedFolders[$file['name']]['sharedWith'][] = $fileShared['share_with'];
+                                break;
+                            }
+                        }else {
+                            //only if it is a group sharing
+                            if ($folder['share_type'] == 1) {
+                                $sharedFolders[$file['name']]['sharedWith'][] = $folder['share_with'];
+                            }
+                        }
+
+                    }
+                }
+            }
+
         }
-        return $listFolder;
+        return $sharedFolders;
     }
 
     /**
@@ -87,13 +119,13 @@ class AdminController extends Controller implements ISettings {
      */
     public function getPanel() {
         $json_data = $this->getJson();
-        $listFolder = $this->getListFolder('/');
+        $SharedFolders = $this->getSharedWithGroupFolders('/');
 
         $groups = $json_data['groups'];
         $params = [
             'groups' => str_replace(',', '|', $groups),
             'appUrl' => $this->appUrl,
-            'listFolder' => $listFolder,
+            'sharedGroupFolders' => $SharedFolders,
         ];
         return new TemplateResponse($this->appName, 'settings-admin', $params, '');
 
