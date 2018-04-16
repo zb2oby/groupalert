@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <database>
     <name>*dbname*</name>
     <create>true</create>
@@ -20,31 +21,31 @@
             </field>
             <field>
                 <name>title</name>
-                <type>varchar</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>200</length>
             </field>
             <field>
                 <name>texte</name>
-                <type>varchar</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>1500</length>
             </field>
             <field>
                 <name>groups</name>
-                <type>varchar</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>200</length>
             </field>
             <field>
                 <name>folder</name>
-                <type>varchar</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>200</length>
             </field>
             <field>
                 <name>checked</name>
-                <type>varchar</type>
+                <type>text</type>
                 <notnull>true</notnull>
                 <length>6</length>
             </field>
