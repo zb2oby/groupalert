@@ -1,15 +1,26 @@
 <?php
 script('groupalert', 'settings-admin');
 style('groupalert', 'settings-admin');
+$urlGenerator = $_['urlGenerator'];
 ?>
 <form class="section" id="GA-setMsg-form">
     <h2>
+        <!--action="<?php /*p($urlGenerator->linkToRoute('groupalert.admin.insert_message')); */?>" method="POST"-->
+       <!-- <input type="submit">-->
         <label for="GA-setMsg"><?php p($l->t('Group message')); ?></label>
         <span class="icon-info svg" title="<?php p($l->t('Group alert Allow you to display several messages on specific shared folders for specific groups')); ?>"></span>
     </h2>
     <div class="GA-first-entry">
         <select name="GA-selectList" id="GA-selectList">
             <option value="0" selected disabled><?php p($l->t('Select existing message')); ?></option>
+            <?php foreach ($_['previousList'] as $previousEntry ) {
+                $id = $previousEntry->getId();
+                $title = $previousEntry->getTitle();
+                $folder = $previousEntry->getFolder();
+                $groups = $previousEntry->getGroups();
+               echo '<option value="'.$id.'">'.$l->t('Title :').' "'.ucfirst($title).'" ('.$l->t('Folder :').' '.'"'.$folder.'")</option>';
+
+            }?>
         </select>
         <?php p($l->t('Or')); ?>
         <label class="label-button" id="GA-new"><?php p($l->t('Type new message')); ?></label>
@@ -19,17 +30,17 @@ style('groupalert', 'settings-admin');
             <h3 class="block-title"><?php p($l->t("Content")); ?></h3>
             <div>
                 <label for="GA-setTitle"><?php p($l->t('Title').'(*)'); ?> : </label>
-                <input type="text" name="GA-setTitle" id="GA-setTitle">
+                <input type="text" name="title" id="GA-setTitle">
                 <p><?php p($l->t('Message content').'(*)'); ?> : </p>
-                <textarea name="GA-setMsg" id="GA-setMsg" cols="50" rows="4" placeholder="<?php p($l->t('Type your message here')); ?>"></textarea>
+                <textarea name="texte" id="GA-setMsg" cols="50" rows="4" placeholder="<?php p($l->t('Type your message here')); ?>"></textarea>
             </div>
             <div id="GA-groups-form">
                 <label for="GA-setGroups"><?php p($l->t('Display for the following groups').'(*)'); ?> : </label>
-                <input type="hidden" id="GA-setGroups" name="GA-setGroups" value="<?php p($_['groups']); ?>">
+                <input type="hidden" id="GA-setGroups" name="groups" value="">
             </div>
             <div id="GA-folder-form">
                 <label for="GA-folder"><?php p($l->t("Display into the following folder's view").'(*)'); ?> : </label>
-                <select name="GA-folder" id="GA-folder">
+                <select name="folder" id="GA-folder">
                     <option value="/"><?php p($l->t("Main file's view"));?></option>
                    <?php foreach ($_['sharedGroupFolders'] as $folder => $share) { ?>
                        <option data-groups="<?php p(json_encode($share['sharedWith'])); ?>" value="<?php p($folder); ?>"><?php p($folder); ?>
@@ -43,6 +54,7 @@ style('groupalert', 'settings-admin');
                    <?php } ?>
                 </select>
             </div>
+            <div class="timeInfo"></div>
         </div>
         <div class="GA-buttons GA-content-block">
             <h3 class="block-title"><?php p($l->t("Actions")); ?></h3>
@@ -55,7 +67,7 @@ style('groupalert', 'settings-admin');
             </div>
             <div>
                 <label class="label-button" id="GA-labelActiveDisplay" for="GA-setDisplay"></label>
-                <input type="checkbox" name="GA-setDisplay" id="GA-setDisplay">
+                <input type="checkbox" name="checked" id="GA-setDisplay">
             </div>
             <div class="GA-submit">
                 <label class="label-button" id="GA-submit"><?php p($l->t('Save')); ?></label>
@@ -94,6 +106,11 @@ style('groupalert', 'settings-admin');
         <li id="GA-l10n-prompt-delete"><?php p($l->t('Do you really want to delete this message ?')); ?></li>
         <li id="GA-l10n-prompt-save"><?php p($l->t('The message is not enabled. Do not forget to enable it to display it')); ?></li>
         <li id="GA-l10n-confirm"><?php p($l->t('I Confirm')); ?></li>
+        <li id="GA-l10n-time-created"><?php p($l->t('Created :')); ?></li>
+        <li id="GA-l10n-time-lastUpdate"><?php p($l->t('Last update :')); ?></li>
+        <li id="GA-l10n-title"><?php p($l->t('Title :')); ?></li>
+        <li id="GA-l10n-folder"><?php p($l->t('Folder :')); ?></li>
+
     </ul>
 
     <!--HIDDEN VALUES FOR JS-->

@@ -29,6 +29,10 @@
   "I Confirm" : "Ich bestätige",
   "Group-Alert message deleted" : "Gruppennachricht gelöscht",
   "Group message disabled" : "Gruppennachricht deaktiviert",
-  "Group message enabled" : "Gruppennachricht aktiviert"
+  "Group message enabled" : "Gruppennachricht aktiviert",
+  "Created :" : "Erstellt :",
+  "Last update :" : "letzte Aktualisierung :",
+  "Title :" : "Titel :",
+  "Folder :" : "Mappe :"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

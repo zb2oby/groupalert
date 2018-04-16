@@ -13,6 +13,10 @@ $(document).ready(function () {
     var errorContextCreate = $('#GA-l10n-errorContext-create').text();
     var errorShare = $('#GA-l10n-error-share').text();
     var errorExist = $('#GA-l10n-error-exist').text();
+    var GATranslateTC = $('#GA-l10n-time-created').text();
+    var GATranslateLU = $('#GA-l10n-time-lastUpdate').text();
+    var l10nTitle = $('#GA-l10n-title').text();
+    var l10nFolder = $('#GA-l10n-folder').text();
 
     //hide content by default
     $('.GA-content-values').hide();
@@ -20,22 +24,6 @@ $(document).ready(function () {
     //hide enable/disable button by default
     $('.GA-buttons').hide();
 
-    //hydrate previous message list
-    $.ajax({
-        url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
-        type: 'GET',
-        dataType: 'json',
-        cache: false
-    })
-    .done(function(data){
-        data.sort(function(a, b){
-            return b['date'] - a['date'];
-        });
-        $.each(data, function(key, entry){
-            var d = new Date(data[key].date*1000);
-                $('#GA-selectList').append('<option value="'+data[key].id+'">'+data[key].title+' '+d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear()+'</option>');
-        })
-    });
 
     //empty fields to add new message
     $('#GA-new').click(function(e) {
@@ -164,76 +152,81 @@ $(document).ready(function () {
             sharedWith = sharedWith.join('|');
         }
 
+
         //save new message
         if ($('#add-new').val() === 'add') {
-            data = "sharedWith="+sharedWith+"&groups="+groups+"&title="+title+"&texte="+message+"&folder="+folder+"&checked="+display;
+            $.post(OC.generateUrl('/apps/groupalert/create/message'), {title: title, texte: message, groups: groups, folder: folder, checked: display, sharedWith: sharedWith}, function (response) {
+                //response = JSON.parse(response);
+
+                if (response.type === 'create' && (typeof response.error === 'undefined' || response.error === '')) {
+                    //hydrate delete button id value and show delete button
+                    $('#GA-delete').val(response.id);
+                    $('.GA-delete').show();
+                    //hydrate select message list
+                    $('#GA-selectList').append('<option selected value="' + response.id + '">' + l10nTitle+' "'+response.title + '" ('+l10nFolder+ ' "' + response.folder + '")</option>');
+                    //remove hidden add input
+                    $('#add-new').val('');
+                    //update timeInfo
+                    $('.timeInfo').html(GATranslateTC+' '+response.date+' - '+GATranslateLU+' '+response.lastUpdate);
+                    //display a message to notify if new created message is disabled
+                    if (display === 'false') {
+                        $('#GA-prompt-content').html(PromptSave);
+                        $('.GA-prompt').fadeIn(450, function () {
+
+                        });
+                        $('#cboxOverlay').show();
+                        $('#cboxOverlay').css({
+                            'opacity': '0.4',
+                            'cursor': 'pointer',
+                            'visibility': 'visible',
+                            'display': 'block'
+                        });
+                    }
+                    //notify success
+                    OC.Notification.showTemporary(t('settings', notificationAdd), {timeout: 2});
+                }
+                else if(typeof response.error !== 'undefined' && response.error !== '') {
+
+                    var GATranslate = errorContextCreate;
+
+                    if (response.error === 'exist') {
+                        GATranslate += ' '+errorExist;
+
+                    }
+                    if (response.error === 'share') {
+                        GATranslate += ' '+errorShare;
+                    }
+                    $('#GA-error-content').html(GATranslate);
+                }
+            });
 
         }
         //update existing message
         else if (idMsg !== 0) {
-            data = "id="+idMsg+"&sharedWith="+sharedWith+"&groups="+groups+"&title="+title+"&texte="+message+"&folder="+folder+"&checked="+display;
+            $.post(OC.generateUrl('/apps/groupalert/update/message'), {id: idMsg, title: title, texte: message, groups: groups, folder: folder, checked: display, sharedWith: sharedWith}, function (response) {
+                if (response.type === 'update' && typeof response.error === 'undefined' || response.error === '') {
+                    //modify title in select message list
+                    $('#GA-selectList').find('option[value="' + idMsg + '"]').html(l10nTitle+' "'+response.title + '" ('+l10nFolder+ ' "' + response.folder + '")');
+                    //update timeInfo
+                    $('.timeInfo').html(GATranslateTC+' '+response.date+' - '+GATranslateLU+' '+response.lastUpdate);
+                    //notify success
+                    OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
+                } else if (typeof response.error !== 'undefined' && response.error !== '') {
+
+                    var GATranslate = errorContextUpdate;
+
+                    if (response.error === 'exist') {
+                        GATranslate += ' ' + errorExist;
+
+                    }
+                    if (response.error === 'share') {
+                        GATranslate += ' ' + errorShare;
+                    }
+                    $('#GA-error-content').html(GATranslate);
+                }
+            });
         }
 
-        $.ajax({
-            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
-            type: 'GET',
-            dataType: 'html',
-            data: data,
-            cache: false
-        })
-        .done(function(response){
-            response = JSON.parse(response);
-
-            if (response.type === 'create' && typeof response.error === 'undefined') {
-                //hydrate delete button id value and show delete button
-                $('#GA-delete').val(response.id);
-                var dateMsg = response.date;
-                $('.GA-delete').show();
-                //hydrate select message list
-                $('#GA-selectList').append('<option selected value="' + response.id + '">' + title + ' ' + dateMsg + '</option>');
-                //remove hidden add input
-                $('#add-new').val('');
-                //display a message to notify if new created message is disabled
-                if (display === 'false') {
-                    $('#GA-prompt-content').html(PromptSave);
-                    $('.GA-prompt').fadeIn(450, function () {
-
-                    });
-                    $('#cboxOverlay').show();
-                    $('#cboxOverlay').css({
-                        'opacity': '0.4',
-                        'cursor': 'pointer',
-                        'visibility': 'visible',
-                        'display': 'block'
-                    });
-                }
-                //notify success
-                OC.Notification.showTemporary(t('settings', notificationAdd), {timeout: 2});
-            }
-            else if (response.type === 'update' && typeof response.error === 'undefined') {
-                //modify title in select message list
-                $('#GA-selectList').find('option[value="'+idMsg+'"]').html(title+' '+response.date);
-                //notify success
-                OC.Notification.showTemporary(t('settings', notificationSave), {timeout: 2});
-            }
-            else if(typeof response.error !== 'undefined') {
-                var GATranslate = '';
-                if (response.type === 'update') {
-                    GATranslate = errorContextUpdate;
-                }else if (response.type === 'create') {
-                    GATranslate = errorContextCreate;
-                }
-                if (response.error === 'exist') {
-                    GATranslate += ' '+errorExist;
-
-                }
-                if (response.error === 'share') {
-                    GATranslate += ' '+errorShare;
-                }
-                $('#GA-error-content').html(GATranslate);
-            }
-
-        });
     });
 
     //SAVE WHEN ENABLING/DISABLING (if message has already been saved)
@@ -247,26 +240,14 @@ $(document).ready(function () {
         }
 
         if (typeof idMsg !== 'undefined' && idMsg !== 0){
-            $.ajax({
-                url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
-                type: 'GET',
-                dataType: 'html',
-                data: 'id='+idMsg+'&checked='+checkedVal,
-                cache: false,
-            })
-            .done(function(response) {
+            $.post(OC.generateUrl('/apps/groupalert/update/display'), {id: idMsg, checked: checkedVal}, function (response) {
                 if (checkedVal === 'true') {
+                    //update timeInfo
                     OC.Notification.showTemporary(t('settings', notificationEnable), {timeout: 2});
                 }else {
                     OC.Notification.showTemporary(t('settings', notificationDisable), {timeout: 2});
                 }
-
-            })
-            .fail(function() {
-
-            })
-            .always(function() {
-
+                $('.timeInfo').html(GATranslateTC+' '+response.date+' - '+GATranslateLU+' '+response.lastUpdate);
             });
         }
     });
@@ -293,26 +274,16 @@ $(document).ready(function () {
         $('.GA-prompt').hide();
         $('#cboxOverlay').hide();
         var idMsg = parseInt($('#GA-delete-button').closest(".GA-delete").find("#GA-delete").val());
-        if (idMsg != 0) {
-            data = 'delete=delete&id='+idMsg;
+        if (idMsg !== 0) {
+            $.post(OC.generateUrl('/apps/groupalert/delete/message'), {id: idMsg}, function (response) {
+                $('#GA-selectList').find('option[value="'+idMsg+'"]').remove();
+                $('#GA-selectList').find('option[value="0"]').prop('selected', true);
+                $('.GA-content-values').hide(500);
+                OC.Notification.showTemporary(t('settings', notificationDelete), {timeout: 2});
+            });
         }else {
             return false;
         }
-        $.ajax({
-            url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
-            type: 'GET',
-            dataType: 'html',
-            data: data,
-            cache: false
-        })
-        .done(function(response){
-            $('#GA-selectList').find('option[value="'+idMsg+'"]').remove();
-            $('#GA-selectList').find('option[value="0"]').prop('selected', true);
-            $('.GA-content-values').hide(500);
-            OC.Notification.showTemporary(t('settings', notificationDelete), {timeout: 2});
-
-        });
-
     });
 
     //UPDATE ENABLE/DISABLE BUTTON
@@ -341,32 +312,25 @@ $(document).ready(function () {
         });
 
         var idMsg = parseInt($(this).val());
-        $.ajax({
-            url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
-            type: 'GET',
-            dataType: 'json',
-            cache: false
-        })
-        .done(function(data){
-            $.each(data, function(key, entry){
-                if(data[key].id === idMsg) {
+        $.post(OC.generateUrl('/apps/groupalert/display/form'), {id: idMsg}, function (data) {
+                if(data.id === idMsg) {
                     //show disable/enable button
                     $('.GA-buttons').show();
                     $('#GA-delete').val(idMsg);
                     $('.GA-delete').show();
                     //hydrate basic fields
-                    $('#GA-setTitle').val(data[key].title);
-                    $('#GA-setMsg').val(data[key].texte);
-                    if (data[key].folder !== '/'){
-                        $('#GA-folder').val(data[key].folder.split('/')[1]);
+                    $('#GA-setTitle').val(data.title);
+                    $('#GA-setMsg').val(data.texte);
+                    if (data.folder !== '/'){
+                        $('#GA-folder').val(data.folder.split('/')[1]);
                     }else {
-                        $('#GA-folder').val(data[key].folder);
+                        $('#GA-folder').val(data.folder);
                     }
                     //change enable/disable button with data value
                     var GASetDisplay = $('#GA-setDisplay');
-                    $(GASetDisplay).val(data[key].checked);
+                    $(GASetDisplay).val(data.checked);
                     var GATranslate;
-                    if (data[key].checked === 'true') {
+                    if (data.checked === 'true') {
                         GATranslate = $('#GA-l10n-disable-button').text();
                         $('#GA-labelActiveDisplay').html(GATranslate);
                         $(GASetDisplay).prop('checked', true);
@@ -375,23 +339,25 @@ $(document).ready(function () {
                         $('#GA-labelActiveDisplay').html(GATranslate);
                     }
 
+                    //hydrate timeZone
+                    $('.timeInfo').html(GATranslateTC+' '+data.date+' - '+GATranslateLU+' '+data.lastUpdate);
 
                     //hydrate groups field
                     //(replace is not really usefull anymore here. keep it for secure)
-                    var groups = data[key].groups.replace(',','|');
+                    var groups = data.groups.replace(',','|');
                     var $groups = $('#GA-setGroups');
                     $groups.val(groups);
                     OC.Settings.setupGroupsSelect($groups);
 
 
                     //prepare preview
-                    $('#GA-message-content').html(data[key].texte);
+                    $('#GA-message-content').html(data.texte);
 
                     //display hydrated fields
                     $('.GA-content-values').show(700);
 
                 }
-            })
+
         });
     });
 

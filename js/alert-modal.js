@@ -13,59 +13,24 @@ function getTargetDir() {
     return targetDir;
 }
 
-function getUserGroups() {
-
-   var response =  $.ajax({
-        url: OC.getRootPath() + '/apps/groupalert/ajax/settings.php',
-        type: 'GET',
-        dataType: 'html',
-        data: 'getUserInfo=groups',
-        cache: false,
-        async: false
-    });
-
-    return JSON.parse(response.responseText);
-}
-
 function showMessage() {
     var targetDir = decodeURIComponent(getTargetDir());
-    var groups = getUserGroups();
 
-    $.ajax({
-        url: OC.getRootPath() + '/apps/groupalert/lib/settings.json',
-        type: 'GET',
-        dataType: 'json',
-        cache: false,
-    })
-        .done(function(data) {
+    $.post(OC.generateUrl('/apps/groupalert/display/message'), {targetDir: targetDir}, function (response) {
+        if (response.display === 'true') {
+            $('.GA-message-content').html(response.text);
+            $('.GA-message').fadeIn(450, function(){
 
-            $.each(data, function(key, entry){
-                $.each(groups, function(keySys, entrySys){
-                    var groups = entry.groups.split('|');
-                    $.each(groups, function(group, messageGroupe){
-                        if(messageGroupe === entrySys && entry.checked === 'true' && targetDir === entry.folder) {
-                            $('.GA-message-content').html(entry.texte);
-                            $('.GA-message').fadeIn(450, function(){
-
-                            });
-                            $('#cboxOverlay').show();
-                            $('#cboxOverlay').css({
-                                'opacity': '0.4',
-                                'cursor': 'pointer',
-                                'visibility': 'visible',
-                                'display' : 'block'
-                            });
-                        }
-                    });
-                });
             });
-        })
-        .fail(function() {
-
-        })
-        .always(function() {
-
-        });
+            $('#cboxOverlay').show();
+            $('#cboxOverlay').css({
+                'opacity': '0.4',
+                'cursor': 'pointer',
+                'visibility': 'visible',
+                'display' : 'block'
+            });
+        }
+    });
 }
 
 $(document).ready(function () {

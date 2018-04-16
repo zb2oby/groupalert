@@ -1,5 +1,5 @@
 # Group Alert
-Group Alert enables ownCloud's admin users to display several messages on files's view for defined groups. It allows to choose in which folder's view the message will be displayed.
+Group Alert enables ownCloud's admin users to display a message on several files's view for defined groups. It allows to choose in which folder's view the message will be displayed.
 # Installation
 Place this app in **owncloud/apps/**
 

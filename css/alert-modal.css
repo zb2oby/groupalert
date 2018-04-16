@@ -11,6 +11,9 @@
     border-radius: 5px;
     text-align: center;
 }
+.GA-message-content {
+    overflow-wrap: break-word;
+}
 .GA-close {
     position: absolute;
     right: 5px;

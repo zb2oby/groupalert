@@ -32,6 +32,10 @@
     "Group message enabled" : "Message de groupe activé",
     "Unable to update message." : "Modification du message impossible.",
     "Unable to create message." : "Creation du message impossible.",
-    "Red fields are required" : "Les champs en rouge sont obligatoires"
+    "Red fields are required" : "Les champs en rouge sont obligatoires",
+    "Created :" : "Création :",
+    "Last update :" : "Dernière mise à jour :",
+    "Title :" : "Titre :",
+    "Folder :" : "Dossier :"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

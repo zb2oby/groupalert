@@ -34,6 +34,10 @@ OC.L10N.register(
         "Group message enabled" : "Mensaje grupal habilitado",
         "Unable to update message." : "No se puede actualizar el mensaje.",
         "Unable to create message." : "No se puede crear el mensaje.",
-        "Red fields are required" : "Se requieren campos rojos"
+        "Red fields are required" : "Se requieren campos rojos",
+        "Created :" : "Creado :",
+        "Last update :" : "Última actualización :",
+        "Title :" : "Título :",
+        "Folder :" : "Carpeta :"
     },
     "nplurals=2; plural=(n > 1);");

@@ -39,7 +39,7 @@
     vertical-align: top;
     padding: 10px;
     border: 1px solid #eee;
-    min-height: 280px;
+    min-height: 310px;
 }
 
 .block-title {
@@ -61,6 +61,16 @@
 #GA-setDisplay {
     visibility: hidden;
     margin: 0;
+}
+
+.timeInfo {
+    font-size: 10px;
+    font-style: italic;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    padding: 0 10px;
 }
 
 #GA-groups-form .select2-container {
