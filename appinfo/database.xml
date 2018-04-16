@@ -12,7 +12,7 @@
                 <type>integer</type>
                 <notnull>true</notnull>
                 <autoincrement>1</autoincrement>
-                <default>1</default>
+                <default>0</default>
             </field>
             <field>
                 <name>dt_message</name>
@@ -55,37 +55,5 @@
                 <length>11</length>
             </field>
         </declaration>
-        <initialization>
-            <insert>
-                <field>
-                    <name>dt_message</name>
-                    <value>1523750400</value>
-                </field>
-                <field>
-                    <name>title</name>
-                    <value>Example</value>
-                </field>
-                <field>
-                    <name>texte</name>
-                    <value>Hello World !</value>
-                </field>
-                <field>
-                    <name>groups</name>
-                    <value>admin</value>
-                </field>
-                <field>
-                    <name>folder</name>
-                    <value>/</value>
-                </field>
-                <field>
-                    <name>checked</name>
-                    <value>true</value>
-                </field>
-                <field>
-                    <name>last_update</name>
-                    <value>1523870161</value>
-                </field>
-            </insert>
-        </initialization>
     </table>
 </database>
