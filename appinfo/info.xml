@@ -5,7 +5,7 @@
     <description>Group Alert enables ownCloud's admin users to display a message on files's view for defined groups. It allows to choose in which folder's view the message will be displayed.</description>
     <licence>AGPL</licence>
     <author>François Boubée</author>
-    <version>1.0</version>
+    <version>1.0.3</version>
     <namespace>GroupAlert</namespace>
     <category>collaboration</category>
     <repository type="bitbucket">https://bitbucket.org/zb2oby/groupalert.git</repository>
