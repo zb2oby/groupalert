@@ -63,6 +63,27 @@ class AdminController extends Controller implements ISettings
         return 0;
     }
 
+    /**
+     * @param $dir
+     * @param array $results
+     * @return array
+     */
+    public function getDirContents($dir, &$results = array()) {
+        //from specified $dir recursively get content from specified $dir
+        $files = \OCA\Files\Helper::getFiles($dir);
+
+        foreach($files as $key => $value){
+            $path = $dir.DIRECTORY_SEPARATOR.$value['name'];
+            if(!$value['type'] == 'dir') {
+                $results[] = $value;
+            } else {
+                $this->getDirContents($path, $results);
+                $results[] = $value;
+            }
+        }
+        //return all files contained in specified $dir
+        return $results;
+    }
 
     /**
      * @param $dir
@@ -70,7 +91,7 @@ class AdminController extends Controller implements ISettings
      */
     public function getSharedWithGroupFolders($dir)
     {
-        $files = \OCA\Files\Helper::getFiles($dir);
+        $files = $this->getDirContents($dir);
         $sharedFolders = [];
 
         foreach ($files as $file) {
@@ -78,10 +99,12 @@ class AdminController extends Controller implements ISettings
             //if it is shared from another user
             if ($file->isShared()) {
                 $fileShared = \OC\Share\Share::getItemSharedWithBySource('folder', $file['fileid']);
-            } //if it is shared from admin to others
+            }
+            //if it is shared from admin to others
             else {
                 $fileShared = \OC\Share\Share::getItemShared('folder', $file['fileid']);
             }
+
 
             //only if it is a folder
             if ($file['type'] === 'dir') {
@@ -92,7 +115,7 @@ class AdminController extends Controller implements ISettings
 
                         //two way here because of different array's format of $fileShared due to different method to get it
                         if ($file->isShared()) {
-                            //only if it is a group sharing
+                            //only if it is a group sharing (sharetype = 1)
                             if ($fileShared['share_type'] == 1) {
                                 $sharedFolders[$file['name']]['sharedWith'][] = $fileShared['share_with'];
                                 break;
@@ -103,7 +126,6 @@ class AdminController extends Controller implements ISettings
                                 $sharedFolders[$file['name']]['sharedWith'][] = $folder['share_with'];
                             }
                         }
-
                     }
                 }
             }
@@ -112,12 +134,13 @@ class AdminController extends Controller implements ISettings
         return $sharedFolders;
     }
 
+
     /**
      * @return TemplateResponse
      */
     public function getPanel()
     {
-        $SharedFolders = $this->getSharedWithGroupFolders('/');
+        $SharedFolders = $this->getSharedWithGroupFolders('');
         $previousList = $this->messageMapper->findAll();
 
         $params = [
