@@ -65,72 +65,41 @@ class AdminController extends Controller implements ISettings
 
     /**
      * @param $dir
-     * @param array $results
-     * @return array
-     */
-    public function getDirContents($dir, &$results = array()) {
-        //from specified $dir recursively get content from specified $dir
-        $files = \OCA\Files\Helper::getFiles($dir);
-
-        foreach($files as $key => $value){
-            $path = $dir.DIRECTORY_SEPARATOR.$value['name'];
-            if(!$value['type'] == 'dir') {
-                $results[] = $value;
-            } else {
-                $this->getDirContents($path, $results);
-                $results[] = $value;
-            }
-        }
-        //return all files contained in specified $dir
-        return $results;
-    }
-
-    /**
-     * @param $dir
      * @return array
      */
     public function getSharedWithGroupFolders($dir)
     {
-        $files = $this->getDirContents($dir);
-        $sharedFolders = [];
+        $sharedFolders = '';
 
-        foreach ($files as $file) {
+        //if it is shared from another user
+        $fileShared = \OC\Share\Share::getItemsSharedWith('folder');
 
-            //if it is shared from another user
-            if ($file->isShared()) {
-                $fileShared = \OC\Share\Share::getItemSharedWithBySource('folder', $file['fileid']);
-            }
-            //if it is shared from admin to others
-            else {
-                $fileShared = \OC\Share\Share::getItemShared('folder', $file['fileid']);
-            }
+        //if it is shared from admin to others
+        $fileSharedTo = \OC\Share\Share::getItemsShared('folder');
 
+        foreach ($fileSharedTo as $file) {
+            $fileShared[] = $file;
+        }
 
-            //only if it is a folder
-            if ($file['type'] === 'dir') {
+        if (!empty($fileShared)) {
 
-                if (!empty($fileShared)) {
+            $sharedFolders = array();
 
-                    foreach ($fileShared as $folder) {
-
-                        //two way here because of different array's format of $fileShared due to different method to get it
-                        if ($file->isShared()) {
-                            //only if it is a group sharing (sharetype = 1)
-                            if ($fileShared['share_type'] == 1) {
-                                $sharedFolders[$file['name']]['sharedWith'][] = $fileShared['share_with'];
-                                break;
-                            }
-                        } else {
-                            //only if it is a group sharing
-                            if ($folder['share_type'] == 1) {
-                                $sharedFolders[$file['name']]['sharedWith'][] = $folder['share_with'];
-                            }
-                        }
+            foreach ($fileShared as $folder) {
+                if ($folder['share_type'] == 1) {
+                    if (isset($sharedFolders[$folder['file_target']])) {
+                        $temp = $sharedFolders[$folder['file_target']];
+                        $temp['share_with'] .= ',' . $folder['share_with'];
+                        $sharedFolders[$folder['file_target']] = $temp;
+                    } else {
+                        $sharedFolders[$folder['file_target']] = $folder;
                     }
                 }
             }
 
+            $sharedFolders = array_values($sharedFolders);
         }
+
         return $sharedFolders;
     }
 
