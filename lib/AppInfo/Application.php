@@ -24,6 +24,7 @@ class Application extends App {
                 $c->query('Request'),
                 $c->query('MessageMapper'),
                 $c->query('ServerContainer')->getURLGenerator()
+
             );
         });
 

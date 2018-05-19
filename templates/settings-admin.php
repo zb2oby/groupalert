@@ -42,12 +42,12 @@ $urlGenerator = $_['urlGenerator'];
                 <label for="GA-folder"><?php p($l->t("Display into the following folder's view").'(*)'); ?> : </label>
                 <select name="folder" id="GA-folder">
                     <option value="/"><?php p($l->t("Main file's view"));?></option>
-                   <?php foreach ($_['sharedGroupFolders'] as $folder => $share) { ?>
-                       <option data-groups="<?php p(json_encode($share['sharedWith'])); ?>" value="<?php p($folder); ?>"><?php p($folder); ?>
+                   <?php foreach ($_['sharedGroupFolders'] as $folder) { ?>
+                       <option data-groups="<?php p(json_encode(explode(',',$folder['share_with']))); ?>" value="<?php p(explode('/',$folder['file_target'])[1]); ?>"><?php p(explode('/',$folder['file_target'])[1]); ?>
                            (
                            <?php
                                p($l->t("Shared with"));
-                               echo ' : '.implode(', ', $share['sharedWith']);
+                               echo ' : '.$folder['share_with'];
                            ?>
                            )
                        </option>
